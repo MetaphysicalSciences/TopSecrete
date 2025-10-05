@@ -3,212 +3,211 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Professional Secure Portal (Prototype)</title>
+  <title>Secure Portal — Encrypt & Package</title>
   <style>
-    :root{--bg:#f3f6fb;--card:#ffffff;--accent:#0b67c2;--muted:#6b7280}
-    body{font-family:Inter,system-ui,Segoe UI,Roboto,"Helvetica Neue",Arial;margin:0;background:linear-gradient(180deg,#eef5ff 0%,#f8fbff 100%);color:#0f1724}
-    header{background:var(--card);border-bottom:1px solid #e6eefc;padding:18px 28px;display:flex;align-items:center;gap:18px}
-    .seal{width:56px;height:56px;border-radius:6px;background:linear-gradient(180deg,#e9f4ff,#d9ecff);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--accent)}
-    h1{font-size:18px;margin:0}
-    .subtitle{color:var(--muted);font-size:13px}
-    main{max-width:980px;margin:28px auto;padding:18px}
-    .card{background:var(--card);border-radius:10px;box-shadow:0 6px 18px rgba(11,103,194,0.06);padding:18px;margin-bottom:16px}
-    label{display:block;margin-bottom:6px;font-weight:600}
-    input[type=file],input[type=number],input[type=text],input[type=password],select{width:100%;padding:10px;border:1px solid #e6eefc;border-radius:8px;background:#fbfeff}
-    .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-    button{background:var(--accent);color:white;padding:10px 14px;border-radius:8px;border:0;font-weight:700;cursor:pointer}
+    :root{--bg:#f6f8fb;--card:#ffffff;--accent:#0f6fc2;--muted:#5b6b7a;--glass:rgba(255,255,255,0.6)}
+    html,body{height:100%;margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;background:linear-gradient(180deg,#eef6ff 0%,#f8fbff 100%);color:#0f1724}
+    .wrap{max-width:1080px;margin:36px auto;padding:20px}
+    header{display:flex;align-items:center;gap:18px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{width:64px;height:64px;border-radius:10px;background:linear-gradient(180deg,#e9f6ff,#d8ecff);display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--accent);font-size:20px;box-shadow:0 6px 20px rgba(15,111,194,0.08)}
+    h1{font-size:22px;margin:0}
+    .lead{color:var(--muted);margin-top:6px}
+    .grid{display:grid;grid-template-columns:1fr 420px;gap:18px;margin-top:20px}
+    .card{background:var(--card);border-radius:14px;padding:18px;box-shadow:0 8px 30px rgba(9,30,66,0.04);border:1px solid rgba(15,111,194,0.04)}
+    label{display:block;margin-bottom:8px;font-weight:700}
+    input[type=file],input[type=number],input[type=text],input[type=password],select{width:100%;padding:12px;border-radius:10px;border:1px solid #e9f3ff;background:#fbfeff;font-size:14px}
+    .row{display:flex;gap:10px}
+    .row > *{flex:1}
+    .btn{display:inline-flex;align-items:center;gap:10px;padding:10px 14px;border-radius:10px;border:0;cursor:pointer;font-weight:700}
+    .btn-primary{background:var(--accent);color:white;box-shadow:0 8px 24px rgba(15,111,194,0.12)}
+    .btn-ghost{background:transparent;border:1px solid rgba(15,111,194,0.08);color:var(--accent)}
     .muted{color:var(--muted);font-size:13px}
-    pre{overflow:auto;background:#0b1220;color:#bfe1ff;padding:12px;border-radius:8px}
-    footer{max-width:980px;margin:10px auto;color:var(--muted);font-size:13px}
-    .danger{color:#9b1c1c}
+    .small{font-size:12px;color:#94a3b8}
+    .progress{height:10px;background:#eef6ff;border-radius:999px;overflow:hidden}
+    .progress > i{display:block;height:100%;width:0%;background:linear-gradient(90deg,#0f6fc2,#3fb0ff);transition:width 300ms ease}
+    footer{margin-top:18px;color:var(--muted);font-size:13px}
+    .help{background:linear-gradient(180deg,rgba(255,255,255,0.6),rgba(255,255,255,0.6));padding:12px;border-radius:10px;border:1px solid rgba(15,111,194,0.03)}
+    .list{padding-left:18px;color:var(--muted)}
   </style>
 </head>
 <body>
-  <header>
-    <div class="seal">SP</div>
-    <div>
-      <h1>Professional Secure Portal — Prototype</h1>
-      <div class="subtitle">Client-side AES‑256 encryption & layered packaging. Not affiliated with any government.</div>
-    </div>
-  </header>
-  <main>
-    <div class="card">
-      <h2>Create encrypted package</h2>
-      <p class="muted">Upload a single file, choose layers & decoys, add a password. The browser will produce a single downloadable package file (<code>.secureenc</code> by default).</p>
-      <div style="margin-top:12px">
-        <label>File to encrypt</label>
-        <input id="inputFile" type="file" />
-      </div>
-      <div style="margin-top:12px" class="row">
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo">SP</div>
         <div>
-          <label>Password</label>
-          <input id="password" type="password" placeholder="Pick a strong password" />
-        </div>
-        <div>
-          <label>Layers</label>
-          <input id="layers" type="number" min="1" max="99" value="35" />
+          <h1>Secure Portal — Encrypt & Package</h1>
+          <div class="lead">Browser-based AES‑256 layered encryption. Files stay in your browser unless you explicitly share them.</div>
         </div>
       </div>
-      <div style="margin-top:12px" class="row">
-        <div>
-          <label>Decoy files to include</label>
-          <input id="decoys" type="number" min="0" max="200" value="50" />
+    </header>
+
+    <div class="grid">
+      <div class="card">
+        <h2 style="margin-top:0">Create encrypted package</h2>
+        <p class="muted">Upload a file, set the number of nested encryption layers and decoys, pick a password and download a single package file.</p>
+
+        <div style="margin-top:14px">
+          <label>File</label>
+          <input id="inputFile" type="file" />
         </div>
-        <div>
-          <label>Output extension</label>
-          <input id="extension" type="text" value="secureenc" />
-        </div>
-      </div>
-      <div style="margin-top:12px;display:flex;gap:8px">
-        <button id="encryptBtn">Create package</button>
-        <button id="downloadSample" style="background:#1f2937">Download sample decoys</button>
-      </div>
-      <div style="margin-top:12px">
-        <details>
-          <summary style="cursor:pointer">Technical notes (click)</summary>
-          <div style="margin-top:8px" class="muted">
-            This is a client-side prototype that uses Web Crypto API (PBKDF2 + AES‑GCM). Each encryption layer derives a fresh key with a fresh salt and IV. All salts/IVs are stored in the package so decryption requires only the password. Decoys are generated as random files with plausible names. This code is for educational/prototyping purposes and is not a substitute for a security audit.
+
+        <div style="margin-top:12px" class="row">
+          <div>
+            <label>Password</label>
+            <input id="password" type="password" placeholder="Choose a strong password (min 12 chars)" />
+            <div class="small">Tip: use a long, unique passphrase.</div>
           </div>
-        </details>
+          <div>
+            <label>Layers</label>
+            <input id="layers" type="number" min="1" max="99" value="35" />
+          </div>
+        </div>
+
+        <div style="margin-top:12px" class="row">
+          <div>
+            <label>Decoys</label>
+            <input id="decoys" type="number" min="0" max="500" value="50" />
+          </div>
+          <div>
+            <label>Output extension</label>
+            <input id="extension" type="text" value="secureenc" />
+          </div>
+        </div>
+
+        <div style="display:flex;gap:10px;margin-top:14px;align-items:center">
+          <button id="encryptBtn" class="btn btn-primary">Create package</button>
+          <button id="downloadSample" class="btn btn-ghost">Download sample</button>
+          <div style="flex:1;text-align:right" class="small muted">Client-side only • AES‑GCM PBKDF2</div>
+        </div>
+
+        <div style="margin-top:16px">
+          <div class="progress" aria-hidden><i id="progressBar"></i></div>
+        </div>
+
+        <div style="margin-top:14px" class="help">
+          <strong class="small">Technical summary</strong>
+          <div class="small muted" style="margin-top:8px">This page uses the Web Crypto API (PBKDF2 + AES‑GCM). Each layer derives a fresh key and IV. The manifest stores salts/IVs so decryption is possible with the original password. Use this for experimentation and prototypes; for production, pair with a security review.</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 style="margin-top:0">Decrypt package</h3>
+        <p class="muted">Upload a package and enter the password to recover the original file.</p>
+        <div style="margin-top:10px">
+          <input id="inputPackage" type="file" />
+        </div>
+        <div style="margin-top:10px" class="row">
+          <div>
+            <input id="decryptPassword" type="password" placeholder="Password" />
+          </div>
+          <div style="display:flex;align-items:flex-end">
+            <button id="decryptBtn" class="btn btn-primary">Decrypt</button>
+          </div>
+        </div>
+
+        <div id="decryptOutput" style="margin-top:12px"></div>
+
+        <hr style="margin:16px 0;border:none;border-top:1px solid rgba(15,111,194,0.04)" />
+        <div class="small muted">Includes decoy listing and a download link for the decrypted file when successful.</div>
+
+        <div style="margin-top:12px" class="small muted">
+          <strong>Note:</strong> This is a professional-looking, client-side tool. It intentionally does not represent or mimic any official government system.
+        </div>
       </div>
     </div>
 
-    <div class="card">
-      <h2>Decrypt package</h2>
-      <p class="muted">Upload a package produced by this tool and provide the password. Decryption happens in your browser.</p>
-      <input id="inputPackage" type="file" />
-      <div style="margin-top:12px" class="row">
+    <div style="margin-top:18px" class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center">
         <div>
-          <label>Password</label>
-          <input id="decryptPassword" type="password" />
+          <strong>Audit checklist</strong>
+          <div class="small muted">If you plan to use this beyond testing, consider: secure password policies, thorough key-handling review, and server-side design for backups & sharing.</div>
         </div>
-        <div style="display:flex;align-items:flex-end">
-          <button id="decryptBtn">Decrypt package</button>
-        </div>
+        <div class="small muted">Version: 1.0 (client-only)</div>
       </div>
-      <div id="decryptOutput" style="margin-top:12px"></div>
+
+      <div style="margin-top:12px" class="list">
+        <ul>
+          <li>In-browser encryption — no upload unless you choose to share.</li>
+          <li>Configurable nested layers and decoys.</li>
+          <li>Downloadable single-file package with chosen extension.</li>
+        </ul>
+      </div>
     </div>
 
-    <div class="card">
-      <h2>Log / Console</h2>
-      <pre id="log">Ready.</pre>
-    </div>
-
-    <div class="card">
-      <h3 class="danger">Important</h3>
-      <ul class="muted">
-        <li>I cannot help create or impersonate an official government website or use government logos/branding. You asked for that; I will not assist with impersonation.</li>
-        <li>This prototype intentionally avoids server uploads: everything happens in the browser so the file contents are not sent anywhere by default.</li>
-        <li>If you plan to use this in production or for sensitive material, get a security audit and use established, well‑maintained libraries and server practices.</li>
-      </ul>
-    </div>
-
-  </main>
-  <footer>
-    Prototype — client-side only. Use strong passwords (long, random). Not audited, no government affiliation.
-  </footer>
+    <footer>
+      <div class="muted">Polished prototype UI. To further customize colors, fonts, or add server storage, tell me what style you want and I’ll update the file.</div>
+    </footer>
+  </div>
 
 <script>
-// Utility helpers
+// --- same core crypto implementation, refined UI hooks ---
 function bufToB64(buf){return btoa(String.fromCharCode(...new Uint8Array(buf)))}
 function b64ToBuf(b64){const bin=atob(b64);const l=bin.length;const a=new Uint8Array(l);for(let i=0;i<l;i++)a[i]=bin.charCodeAt(i);return a.buffer}
 function randBytes(len){const b=new Uint8Array(len);crypto.getRandomValues(b);return b}
-function log(...args){const el=document.getElementById('log');el.textContent += '\n'+Array.from(args).join(' ');el.scrollTop = el.scrollHeight}
-
 async function deriveKey(password, salt, iterations=150000){
   const enc = new TextEncoder();
   const baseKey = await crypto.subtle.importKey('raw', enc.encode(password), {name:'PBKDF2'}, false, ['deriveKey']);
   return crypto.subtle.deriveKey({name:'PBKDF2',salt,iterations,hash:'SHA-256'}, baseKey, {name:'AES-GCM',length:256}, false, ['encrypt','decrypt']);
 }
+async function aesGcmEncrypt(key, iv, data){return crypto.subtle.encrypt({name:'AES-GCM',iv}, key, data)}
+async function aesGcmDecrypt(key, iv, data){return crypto.subtle.decrypt({name:'AES-GCM',iv}, key, data)}
+function makeRandomBlob(size){const arr=new Uint8Array(size);crypto.getRandomValues(arr);return arr.buffer}
+function randomFilename(){const exts=['txt','jpg','pdf','docx','xls','png','dat','log','csv'];const n=Math.floor(Math.random()*100000);return `decoy_${n}.${exts[Math.floor(Math.random()*exts.length)]}`}
 
-async function aesGcmEncrypt(key, iv, data){
-  return crypto.subtle.encrypt({name:'AES-GCM',iv}, key, data);
-}
-async function aesGcmDecrypt(key, iv, data){
-  return crypto.subtle.decrypt({name:'AES-GCM',iv}, key, data);
-}
+const progressBar = document.getElementById('progressBar');
+function setProgress(p){progressBar.style.width = Math.max(0,Math.min(100,p)) + '%'}
 
-function randomFilename(){
-  const exts = ['txt','jpg','pdf','docx','xls','png','dat','log','csv'];
-  const n = Math.floor(Math.random()*100000);
-  return `decoy_${n}.${exts[Math.floor(Math.random()*exts.length)]}`;
-}
-
-function makeRandomBlob(size){
-  const arr=new Uint8Array(size);
-  crypto.getRandomValues(arr);
-  return arr.buffer;
-}
-
-// Create package
+// Encryption
 document.getElementById('encryptBtn').addEventListener('click', async ()=>{
   const fileInput = document.getElementById('inputFile');
   const pw = document.getElementById('password').value;
   const layers = parseInt(document.getElementById('layers').value,10)||35;
   const decoys = parseInt(document.getElementById('decoys').value,10)||50;
   const extension = (document.getElementById('extension').value||'secureenc').replace(/[^a-zA-Z0-9_-]/g,'');
-
   if(!fileInput.files.length){alert('Pick a file');return}
-  if(!pw){alert('Pick a password');return}
-  if(layers<1 || layers>200){alert('Layers must be 1-200');return}
-  if(decoys<0 || decoys>500){alert('Decoys 0-500');return}
-
+  if(!pw || pw.length<8){if(!confirm('Password seems short. Continue?'))return}
   const file = fileInput.files[0];
-  log('Encrypting',file.name, 'layers=',layers,'decoys=',decoys);
   const arrayBuffer = await file.arrayBuffer();
-
-  // Start with raw data
   let current = arrayBuffer;
   const layerMeta = [];
-
   for(let i=0;i<layers;i++){
-    const salt = randBytes(16).buffer;
-    const iv = randBytes(12).buffer;
+    const salt = randBytes(16).buffer; const iv = randBytes(12).buffer;
     const key = await deriveKey(pw, salt);
     const ct = await aesGcmEncrypt(key, iv, current);
     layerMeta.push({salt:bufToB64(salt),iv:bufToB64(iv),ct:bufToB64(ct)});
-    current = ct; // next layer encrypts previous ciphertext
-    log('Layer',i+1,'done (size',current.byteLength,')');
-    // micro-yield
+    current = ct;
+    setProgress(((i+1)/layers)*70);
     await new Promise(r=>setTimeout(r,1));
   }
-
-  // Generate decoys
   const decoyList = [];
   for(let i=0;i<decoys;i++){
-    const size = 1024 + Math.floor(Math.random()*100000); // 1KB - 100KB
+    const size = 1024 + Math.floor(Math.random()*100000);
     const buf = makeRandomBlob(size);
     const name = randomFilename();
     decoyList.push({name, data: bufToB64(buf)});
   }
-  log('Generated',decoys,'decoys');
-
-  const manifest = {
-    meta:{created:new Date().toISOString(),originalName:file.name,layers:layers,decoys:decoys,algorithm:'PBKDF2+AES-GCM'},
-    layers: layerMeta,
-    decoys: decoyList
-  };
-
-  const manifestStr = JSON.stringify(manifest);
-  const blob = new Blob([manifestStr],{type:'application/octet-stream'});
+  setProgress(85);
+  const manifest = {meta:{created:new Date().toISOString(),originalName:file.name,layers:layers,decoys:decoys,algorithm:'PBKDF2+AES-GCM'},layers: layerMeta,decoys: decoyList};
+  const blob = new Blob([JSON.stringify(manifest)],{type:'application/octet-stream'});
   const fname = file.name + '.' + extension;
   const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url; a.download = fname; document.body.appendChild(a); a.click(); a.remove();
-  URL.revokeObjectURL(url);
-  log('Package created:',fname);
+  const a = document.createElement('a');a.href=url;a.download=fname;document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
+  setProgress(100);
+  setTimeout(()=>setProgress(0),600);
+  alert('Package created: ' + fname);
 });
 
-// Download sample decoys (for testing)
 document.getElementById('downloadSample').addEventListener('click',()=>{
   const decoys = [];
-  for(let i=0;i<5;i++){decoys.push({name:`sample_${i}.txt`, data:bufToB64(new TextEncoder().encode('sample decoy '+i))})}
-  const manifest = {meta:{created:new Date().toISOString(),originalName:'sample',layers:1,decoys:5},layers:[],decoys};
+  for(let i=0;i<3;i++){decoys.push({name:`sample_${i}.txt`, data:bufToB64(new TextEncoder().encode('sample decoy '+i))})}
+  const manifest = {meta:{created:new Date().toISOString(),originalName:'sample',layers:1,decoys:3},layers:[],decoys};
   const blob = new Blob([JSON.stringify(manifest)],{type:'application/octet-stream'});
   const a = document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='sample.secureenc'; a.click(); URL.revokeObjectURL(a.href);
 });
 
-// Decrypt package
+// Decrypt
 document.getElementById('decryptBtn').addEventListener('click', async ()=>{
   const pkgInput = document.getElementById('inputPackage');
   const pw = document.getElementById('decryptPassword').value;
@@ -217,47 +216,30 @@ document.getElementById('decryptBtn').addEventListener('click', async ()=>{
   if(!pw){alert('Enter password');return}
   const file = pkgInput.files[0];
   const text = await file.text();
-  let manifest;
-  try{manifest = JSON.parse(text)}catch(e){alert('Not a valid package');return}
-  log('Package loaded:',manifest.meta?.originalName || file.name);
-
+  let manifest; try{manifest = JSON.parse(text)}catch(e){alert('Not a valid package');return}
   if(!manifest.layers || !Array.isArray(manifest.layers)){
-    out.innerHTML = '<div class="muted">No encrypted layers found. Decoys only.</div>';
+    out.innerHTML = '<div class="muted">No encrypted layers found.</div>';
     return;
   }
-
-  // Reconstruct - decrypt layers in reverse
   try{
-    let current;
-    // Start with last layer's ciphertext
-    const last = manifest.layers[manifest.layers.length-1];
-    current = b64ToBuf(last.ct);
+    let current = b64ToBuf(manifest.layers[manifest.layers.length-1].ct);
     for(let i=manifest.layers.length-1;i>=0;i--){
       const meta = manifest.layers[i];
-      const salt = b64ToBuf(meta.salt);
-      const iv = b64ToBuf(meta.iv);
+      const salt = b64ToBuf(meta.salt); const iv = b64ToBuf(meta.iv);
       const key = await deriveKey(pw, salt);
       const decrypted = await aesGcmDecrypt(key, iv, current);
-      current = decrypted; // becomes input for previous layer
-      log('Decrypted layer',i+1);
+      current = decrypted;
+      setProgress(((manifest.layers.length - i)/manifest.layers.length)*80);
     }
-    // current is now original file bytes
     const outBlob = new Blob([current]);
     const url = URL.createObjectURL(outBlob);
     const a = document.createElement('a'); a.href=url; a.download = manifest.meta?.originalName || 'decrypted.bin'; a.textContent='Download decrypted file'; out.appendChild(a);
-    out.appendChild(document.createElement('br'));
-
-    // List decoys
     if(manifest.decoys && manifest.decoys.length){
       const dlist = document.createElement('div'); dlist.className='muted'; dlist.innerHTML='<strong>Decoys included:</strong><ul>'+(manifest.decoys.map(d=>`<li>${d.name} (${Math.round((atob(d.data).length)/1024)} KB)</li>`).join(''))+'</ul>';
       out.appendChild(dlist);
     }
-
-  }catch(e){
-    console.error(e);
-    alert('Decryption failed — wrong password or corrupted package');
-    log('Decryption error',e.message || e);
-  }
+    setTimeout(()=>setProgress(0),600);
+  }catch(e){console.error(e);alert('Decryption failed — wrong password or corrupted package');setProgress(0)}
 });
 </script>
 </body>
