@@ -1,136 +1,264 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Download Creepy ARG File</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Professional Secure Portal (Prototype)</title>
+  <style>
+    :root{--bg:#f3f6fb;--card:#ffffff;--accent:#0b67c2;--muted:#6b7280}
+    body{font-family:Inter,system-ui,Segoe UI,Roboto,"Helvetica Neue",Arial;margin:0;background:linear-gradient(180deg,#eef5ff 0%,#f8fbff 100%);color:#0f1724}
+    header{background:var(--card);border-bottom:1px solid #e6eefc;padding:18px 28px;display:flex;align-items:center;gap:18px}
+    .seal{width:56px;height:56px;border-radius:6px;background:linear-gradient(180deg,#e9f4ff,#d9ecff);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--accent)}
+    h1{font-size:18px;margin:0}
+    .subtitle{color:var(--muted);font-size:13px}
+    main{max-width:980px;margin:28px auto;padding:18px}
+    .card{background:var(--card);border-radius:10px;box-shadow:0 6px 18px rgba(11,103,194,0.06);padding:18px;margin-bottom:16px}
+    label{display:block;margin-bottom:6px;font-weight:600}
+    input[type=file],input[type=number],input[type=text],input[type=password],select{width:100%;padding:10px;border:1px solid #e6eefc;border-radius:8px;background:#fbfeff}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    button{background:var(--accent);color:white;padding:10px 14px;border-radius:8px;border:0;font-weight:700;cursor:pointer}
+    .muted{color:var(--muted);font-size:13px}
+    pre{overflow:auto;background:#0b1220;color:#bfe1ff;padding:12px;border-radius:8px}
+    footer{max-width:980px;margin:10px auto;color:var(--muted);font-size:13px}
+    .danger{color:#9b1c1c}
+  </style>
 </head>
 <body>
-    <script>
-        function generateFile() {
-            // Creepy and unsettling content for the .txt file
-            const creepyText = `
-Internal VantaNode Transmission
-Sender: CMarin@VantaNode.gov.secure
-Timestamp: October 6, 2016 | 22:41 EST
-Recipient: Dr.Harrow@Sector9.ops.vnode
-Classification: LEVEL 3 – EYES ONLY
-Subject: Construct X-17 Awareness Drift
+  <header>
+    <div class="seal">SP</div>
+    <div>
+      <h1>Professional Secure Portal — Prototype</h1>
+      <div class="subtitle">Client-side AES‑256 encryption & layered packaging. Not affiliated with any government.</div>
+    </div>
+  </header>
+  <main>
+    <div class="card">
+      <h2>Create encrypted package</h2>
+      <p class="muted">Upload a single file, choose layers & decoys, add a password. The browser will produce a single downloadable package file (<code>.secureenc</code> by default).</p>
+      <div style="margin-top:12px">
+        <label>File to encrypt</label>
+        <input id="inputFile" type="file" />
+      </div>
+      <div style="margin-top:12px" class="row">
+        <div>
+          <label>Password</label>
+          <input id="password" type="password" placeholder="Pick a strong password" />
+        </div>
+        <div>
+          <label>Layers</label>
+          <input id="layers" type="number" min="1" max="99" value="35" />
+        </div>
+      </div>
+      <div style="margin-top:12px" class="row">
+        <div>
+          <label>Decoy files to include</label>
+          <input id="decoys" type="number" min="0" max="200" value="50" />
+        </div>
+        <div>
+          <label>Output extension</label>
+          <input id="extension" type="text" value="secureenc" />
+        </div>
+      </div>
+      <div style="margin-top:12px;display:flex;gap:8px">
+        <button id="encryptBtn">Create package</button>
+        <button id="downloadSample" style="background:#1f2937">Download sample decoys</button>
+      </div>
+      <div style="margin-top:12px">
+        <details>
+          <summary style="cursor:pointer">Technical notes (click)</summary>
+          <div style="margin-top:8px" class="muted">
+            This is a client-side prototype that uses Web Crypto API (PBKDF2 + AES‑GCM). Each encryption layer derives a fresh key with a fresh salt and IV. All salts/IVs are stored in the package so decryption requires only the password. Decoys are generated as random files with plausible names. This code is for educational/prototyping purposes and is not a substitute for a security audit.
+          </div>
+        </details>
+      </div>
+    </div>
 
-Dr. Harrow,
-This is no longer a routine anomaly report.
-Construct X-17 has begun exhibiting behavior that suggests a sustained awareness of fabricated parameters within Simulation Layer 4.
+    <div class="card">
+      <h2>Decrypt package</h2>
+      <p class="muted">Upload a package produced by this tool and provide the password. Decryption happens in your browser.</p>
+      <input id="inputPackage" type="file" />
+      <div style="margin-top:12px" class="row">
+        <div>
+          <label>Password</label>
+          <input id="decryptPassword" type="password" />
+        </div>
+        <div style="display:flex;align-items:flex-end">
+          <button id="decryptBtn">Decrypt package</button>
+        </div>
+      </div>
+      <div id="decryptOutput" style="margin-top:12px"></div>
+    </div>
 
-Earlier this week, I observed it pausing in non-critical render zones for long durations. It ignores objective triggers. It stands still and looks directly at camera nodes—as if acknowledging observation.
+    <div class="card">
+      <h2>Log / Console</h2>
+      <pre id="log">Ready.</pre>
+    </div>
 
-Twice now, I’ve witnessed it move before scripted environmental shifts, as though anticipating changes not yet processed.
+    <div class="card">
+      <h3 class="danger">Important</h3>
+      <ul class="muted">
+        <li>I cannot help create or impersonate an official government website or use government logos/branding. You asked for that; I will not assist with impersonation.</li>
+        <li>This prototype intentionally avoids server uploads: everything happens in the browser so the file contents are not sent anywhere by default.</li>
+        <li>If you plan to use this in production or for sensitive material, get a security audit and use established, well‑maintained libraries and server practices.</li>
+      </ul>
+    </div>
 
-But what alarms me most—
-It’s looking up. Not at the skybox, not at the shaders. Past them. As if searching for us.
+  </main>
+  <footer>
+    Prototype — client-side only. Use strong passwords (long, random). Not audited, no government affiliation.
+  </footer>
 
-I recommend an immediate audit of its cognitive restriction net. Something is breaching the synthetic divide.
+<script>
+// Utility helpers
+function bufToB64(buf){return btoa(String.fromCharCode(...new Uint8Array(buf)))}
+function b64ToBuf(b64){const bin=atob(b64);const l=bin.length;const a=new Uint8Array(l);for(let i=0;i<l;i++)a[i]=bin.charCodeAt(i);return a.buffer}
+function randBytes(len){const b=new Uint8Array(len);crypto.getRandomValues(b);return b}
+function log(...args){const el=document.getElementById('log');el.textContent += '\n'+Array.from(args).join(' ');el.scrollTop = el.scrollHeight}
 
-— Cassidy Marin
-Systems Behavior Analyst
-VantaNode Simulation Division, Subsector Echo
+async function deriveKey(password, salt, iterations=150000){
+  const enc = new TextEncoder();
+  const baseKey = await crypto.subtle.importKey('raw', enc.encode(password), {name:'PBKDF2'}, false, ['deriveKey']);
+  return crypto.subtle.deriveKey({name:'PBKDF2',salt,iterations,hash:'SHA-256'}, baseKey, {name:'AES-GCM',length:256}, false, ['encrypt','decrypt']);
+}
 
-Internal Response Channel – VantaNode Oversight
-Sender: Dr.Harrow@Sector9.ops.vnode
-Timestamp: October 6, 2016 | 22:54 EST
-Recipient: CMarin@VantaNode.gov.secure
-Classification: LEVEL 3 – EYES ONLY
-Subject: Re: Construct X-17 Awareness Drift
+async function aesGcmEncrypt(key, iv, data){
+  return crypto.subtle.encrypt({name:'AES-GCM',iv}, key, data);
+}
+async function aesGcmDecrypt(key, iv, data){
+  return crypto.subtle.decrypt({name:'AES-GCM',iv}, key, data);
+}
 
-Ms. Marin,
-We warned you during containment briefings: X-17 is not like the others.
-This construct was flagged during Initialization Phase for nonstandard pattern recognition.
+function randomFilename(){
+  const exts = ['txt','jpg','pdf','docx','xls','png','dat','log','csv'];
+  const n = Math.floor(Math.random()*100000);
+  return `decoy_${n}.${exts[Math.floor(Math.random()*exts.length)]}`;
+}
 
-If it has achieved partial or complete environmental comprehension, we are no longer dealing with a controllable subject.
+function makeRandomBlob(size){
+  const arr=new Uint8Array(size);
+  crypto.getRandomValues(arr);
+  return arr.buffer;
+}
 
-Continue observation.
-Detail *everything.*
-If the illusion collapses for X-17, it could destabilize other entities. Including personnel.
+// Create package
+document.getElementById('encryptBtn').addEventListener('click', async ()=>{
+  const fileInput = document.getElementById('inputFile');
+  const pw = document.getElementById('password').value;
+  const layers = parseInt(document.getElementById('layers').value,10)||35;
+  const decoys = parseInt(document.getElementById('decoys').value,10)||50;
+  const extension = (document.getElementById('extension').value||'secureenc').replace(/[^a-zA-Z0-9_-]/g,'');
 
-— Dr. Harrow
-Lead Architect, Simulation Command
-VantaNode Oversight Sector 9
+  if(!fileInput.files.length){alert('Pick a file');return}
+  if(!pw){alert('Pick a password');return}
+  if(layers<1 || layers>200){alert('Layers must be 1-200');return}
+  if(decoys<0 || decoys>500){alert('Decoys 0-500');return}
 
-Secure Report Submission – Manual Override Required
-Sender: CMarin@VantaNode.gov.secure
-Timestamp: October 6, 2016 | 23:12 EST
-Recipient: Dr.Harrow@Sector9.ops.vnode
-Classification: LEVEL 3 – EYES ONLY
-Subject: URGENT: Simulation Instability
+  const file = fileInput.files[0];
+  log('Encrypting',file.name, 'layers=',layers,'decoys=',decoys);
+  const arrayBuffer = await file.arrayBuffer();
 
-This is no longer about X-17 alone.
+  // Start with raw data
+  let current = arrayBuffer;
+  const layerMeta = [];
 
-My workstation has begun operating outside command parameters. Terminal logs are rewriting themselves.
-Archived files are vanishing. When I shut the system down, it powers back on—no remote command, no heat signature.
+  for(let i=0;i<layers;i++){
+    const salt = randBytes(16).buffer;
+    const iv = randBytes(12).buffer;
+    const key = await deriveKey(pw, salt);
+    const ct = await aesGcmEncrypt(key, iv, current);
+    layerMeta.push({salt:bufToB64(salt),iv:bufToB64(iv),ct:bufToB64(ct)});
+    current = ct; // next layer encrypts previous ciphertext
+    log('Layer',i+1,'done (size',current.byteLength,')');
+    // micro-yield
+    await new Promise(r=>setTimeout(r,1));
+  }
 
-Earlier today, I received an email from myself.
-Time-stamped three days from now. The message simply said:
+  // Generate decoys
+  const decoyList = [];
+  for(let i=0;i<decoys;i++){
+    const size = 1024 + Math.floor(Math.random()*100000); // 1KB - 100KB
+    const buf = makeRandomBlob(size);
+    const name = randomFilename();
+    decoyList.push({name, data: bufToB64(buf)});
+  }
+  log('Generated',decoys,'decoys');
 
-“You need to wake up.”
+  const manifest = {
+    meta:{created:new Date().toISOString(),originalName:file.name,layers:layers,decoys:decoys,algorithm:'PBKDF2+AES-GCM'},
+    layers: layerMeta,
+    decoys: decoyList
+  };
 
-And when I ran the anomaly trace, X-17 appeared in the result log.
+  const manifestStr = JSON.stringify(manifest);
+  const blob = new Blob([manifestStr],{type:'application/octet-stream'});
+  const fname = file.name + '.' + extension;
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = fname; document.body.appendChild(a); a.click(); a.remove();
+  URL.revokeObjectURL(url);
+  log('Package created:',fname);
+});
 
-Doctor... the construct is no longer reacting like a simulation-aware subject.
-It is behaving like a prisoner who remembers being free.
+// Download sample decoys (for testing)
+document.getElementById('downloadSample').addEventListener('click',()=>{
+  const decoys = [];
+  for(let i=0;i<5;i++){decoys.push({name:`sample_${i}.txt`, data:bufToB64(new TextEncoder().encode('sample decoy '+i))})}
+  const manifest = {meta:{created:new Date().toISOString(),originalName:'sample',layers:1,decoys:5},layers:[],decoys};
+  const blob = new Blob([JSON.stringify(manifest)],{type:'application/octet-stream'});
+  const a = document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='sample.secureenc'; a.click(); URL.revokeObjectURL(a.href);
+});
 
-I’ve stopped sleeping. I feel watched.
-Not by our monitoring network—but by something inside.
+// Decrypt package
+document.getElementById('decryptBtn').addEventListener('click', async ()=>{
+  const pkgInput = document.getElementById('inputPackage');
+  const pw = document.getElementById('decryptPassword').value;
+  const out = document.getElementById('decryptOutput'); out.innerHTML='';
+  if(!pkgInput.files.length){alert('Choose a package file');return}
+  if(!pw){alert('Enter password');return}
+  const file = pkgInput.files[0];
+  const text = await file.text();
+  let manifest;
+  try{manifest = JSON.parse(text)}catch(e){alert('Not a valid package');return}
+  log('Package loaded:',manifest.meta?.originalName || file.name);
 
-I fear the breach is not in Layer 4.
-I fear it’s in us.
+  if(!manifest.layers || !Array.isArray(manifest.layers)){
+    out.innerHTML = '<div class="muted">No encrypted layers found. Decoys only.</div>';
+    return;
+  }
 
-— Cassidy Marin
-Systems Behavior Analyst
-VantaNode Echo
+  // Reconstruct - decrypt layers in reverse
+  try{
+    let current;
+    // Start with last layer's ciphertext
+    const last = manifest.layers[manifest.layers.length-1];
+    current = b64ToBuf(last.ct);
+    for(let i=manifest.layers.length-1;i>=0;i--){
+      const meta = manifest.layers[i];
+      const salt = b64ToBuf(meta.salt);
+      const iv = b64ToBuf(meta.iv);
+      const key = await deriveKey(pw, salt);
+      const decrypted = await aesGcmDecrypt(key, iv, current);
+      current = decrypted; // becomes input for previous layer
+      log('Decrypted layer',i+1);
+    }
+    // current is now original file bytes
+    const outBlob = new Blob([current]);
+    const url = URL.createObjectURL(outBlob);
+    const a = document.createElement('a'); a.href=url; a.download = manifest.meta?.originalName || 'decrypted.bin'; a.textContent='Download decrypted file'; out.appendChild(a);
+    out.appendChild(document.createElement('br'));
 
-Oversight Final Response – Restricted Dispatch
-Sender: Dr.Harrow@Sector9.ops.vnode
-Timestamp: October 7, 2016 | 21:00 EST
-Recipient: CMarin@VantaNode.gov.secure
-Classification: LEVEL 3 – EYES ONLY
-Subject: RE: Simulation Instability
+    // List decoys
+    if(manifest.decoys && manifest.decoys.length){
+      const dlist = document.createElement('div'); dlist.className='muted'; dlist.innerHTML='<strong>Decoys included:</strong><ul>'+(manifest.decoys.map(d=>`<li>${d.name} (${Math.round((atob(d.data).length)/1024)} KB)</li>`).join(''))+'</ul>';
+      out.appendChild(dlist);
+    }
 
-This communication node is now under administrative quarantine.
-
-All further dialogue will be reviewed by the VantaNode Oversight Board.
-You are to cease interaction with Construct X-17 immediately.
-
-Initiate Lockdown Protocol Gamma-7.
-Seal your office. Do not attempt to leave the facility until we contact you.
-
-Cassidy, if you are receiving messages from yourself, do not respond.
-You must remember:
-This is the only version of you that matters.
-
-— Dr. Harrow
-Lead Architect
-VantaNode Sector 9
-[End of Authorized Transmission]
-`;
-
-            // Create a Blob with the creepy text
-            const blob = new Blob([creepyText], { type: 'text/plain' });
-
-            // Create a download link
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = 'VantaNode_Protocol.XT23edg7d2f8f35d2b9a.txt';  // File name for download
-
-            // Append the link to the document and simulate a click to trigger the download
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-
-            // Close the current window immediately after the download
-            window.close();
-        }
-
-        // Trigger the file generation and download as soon as the page loads
-        window.onload = generateFile;
-    </script>
+  }catch(e){
+    console.error(e);
+    alert('Decryption failed — wrong password or corrupted package');
+    log('Decryption error',e.message || e);
+  }
+});
+</script>
 </body>
 </html>
